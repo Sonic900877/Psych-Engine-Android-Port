@@ -62,7 +62,7 @@ class OptionsState extends MusicBeatState
 		changeSelection();
 
 		#if mobileC
-		addVirtualPad(FULL, A_B);
+		addVirtualPad(UP_DOWN, A_B);
 		#end		
 
 		super.create();
@@ -72,10 +72,11 @@ class OptionsState extends MusicBeatState
 		super.closeSubState();
 		ClientPrefs.saveSettings();
 		changeSelection();
-	}
+                _virtualpad.alpha = 0.75;
+      	}
 
 	override function update(elapsed:Float) {
-		super.update(elapsed);				
+		super.update(elapsed);		
 
 		if (controls.UI_UP_P) {
 			changeSelection(-1);
@@ -94,15 +95,17 @@ class OptionsState extends MusicBeatState
 				item.alpha = 0;
 			}
 
+                        _virtualpad.alpha = 0;
+
 			switch(options[curSelected]) {
 				case 'Notes':
 				 	openSubState(new NotesSubstate());
-				case 'Keyboard Controls':
+				case 'Keyboard Controls':                                        
 					openSubState(new ControlsSubstate());
 				case 'Mobile Controls':
 					MusicBeatState.switchState(new options.CustomControlsState());					
 
-				case 'Preferences':
+				case 'Preferences':                                        
 					openSubState(new PreferencesSubstate());									
 			}
 		}
@@ -303,7 +306,7 @@ class NotesSubstate extends MusicBeatSubstate
 				});
 				grpNotes.forEachAlive(function(spr:FlxSprite) {
 					spr.alpha = 0;
-				});
+				});                
 				close();
 			}
 			changingNote = false;
@@ -497,7 +500,7 @@ class ControlsSubstate extends MusicBeatSubstate {
 				ClientPrefs.reloadControls();
 				grpOptions.forEachAlive(function(spr:Alphabet) {
 					spr.alpha = 0;
-				});
+				});              
 				close();
 				FlxG.sound.play(Paths.sound('cancelMenu'));	
 			}
@@ -870,7 +873,7 @@ class PreferencesSubstate extends MusicBeatSubstate
 			if(showCharacter != null) {
 				showCharacter.alpha = 0;
 			}
-			descText.alpha = 0;
+			descText.alpha = 0;                        
 			close();
 			FlxG.sound.play(Paths.sound('cancelMenu'));	
 		}
